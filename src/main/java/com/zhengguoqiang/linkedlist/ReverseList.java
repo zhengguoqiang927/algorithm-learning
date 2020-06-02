@@ -9,7 +9,7 @@ public class ReverseList {
         }
     }
 
-    //方案一
+    //方案一 非递归实现
     public static ListNode solutionOne(ListNode head){
         ListNode cur = head;
         ListNode prev = null;
@@ -23,10 +23,14 @@ public class ReverseList {
         return prev;
     }
 
+    //递归实现
     public static ListNode solutionTwo(ListNode head){
         if (head == null || head.next == null) return head;
+        //递归调用，先反转下一个结点
         ListNode p = solutionTwo(head.next);
+        //将下一个节点的后继指针指向自己，即反转
         head.next.next = head;
+        //反转之后，当前节点的后继指针指为null
         head.next = null;
         return p;
     }
