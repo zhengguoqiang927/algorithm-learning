@@ -1,5 +1,7 @@
 package com.zhengguoqiang.linkedlist;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 public class MergeTwoLists {
     static class ListNode{
         final int val;
@@ -50,6 +52,7 @@ public class MergeTwoLists {
         rn3.next = rn4;
         rn4.next = null;
 
-
+        int HASH_BITS = 0x7fffffff;
+        System.out.println(HASH_BITS);
     }
 }

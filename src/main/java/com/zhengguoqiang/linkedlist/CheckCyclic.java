@@ -18,7 +18,7 @@ public class CheckCyclic {
     //方案一 哈希表
     //时间复杂度：O(n),空间复杂度：O(n)
     public static boolean solutionOne(ListNode head){
-        if (head == null || head.next == null) return false;
+//        if (head == null || head.next == null) return false;
         Set<ListNode> nodeSet = new HashSet<>();
         while (head != null){
             if (nodeSet.contains(head)){
@@ -34,7 +34,7 @@ public class CheckCyclic {
     //方案二 快慢指针
     //时间复杂度：O(n),空间复杂度：O(1)
     public static boolean solutionTwo(ListNode head){
-        if (head == null || head.next == null) return false;
+//        if (head == null || head.next == null) return false;
         ListNode slow = head,fast = head;
         do {
             if (fast == null || fast.next == null) return false;
@@ -54,9 +54,8 @@ public class CheckCyclic {
         ln3.next = ln4;
         ln4.next = ln3;
 
-        ListNode head = ln1;
-//        boolean p = solutionOne(head);
-        boolean p = solutionTwo(head);
+//        boolean p = solutionOne(ln1);
+        boolean p = solutionTwo(ln1);
         System.out.println(p);
     }
 }

@@ -4,6 +4,9 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -78,6 +81,16 @@ public class AppTest
         String s1 = s.replaceAll("[\\r\\n]", "\n");
 //        String s2 = s1.replaceAll("^\\n$","00");
         System.out.println(s1);
+
+        Map<String,Integer> map = new HashMap<>();
+        map.put("a",1);
+        map.put("b",2);
+        map.put("c",3);
+        map.put("d",4);
+        Set<String> strings = map.keySet();
+        for (String ss:strings){
+            System.out.println(ss);
+        }
     }
 
 
