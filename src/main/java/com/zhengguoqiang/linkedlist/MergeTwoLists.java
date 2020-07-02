@@ -11,31 +11,44 @@ public class MergeTwoLists {
         }
     }
 
+    //方法一：遍历比较 时间复杂度O(n + m)
     public static ListNode merge(ListNode p1,ListNode p2){
-        if (p1 == null) return p2;
-        ListNode head = p1;
-        while (true){
-            if (p1 == null){
-                head.next = p2;
-                break;
-            }
-            if (p2 == null){
-                head.next = p1;
-                break;
-            }
+        ListNode shard = new ListNode(0);
+        ListNode first = shard;
+        while (p1 != null && p2 != null){
             if (p1.val < p2.val){
-                head = p1;
+                first.next = p1;
+                first = first.next;
                 p1 = p1.next;
             }else{
-
+                first.next = p2;
+                first = first.next;
+                p2 = p2.next;
             }
         }
-        return head;
+        first.next = p1 == null ? p2 : p1;
+        return shard.next;
+    }
+
+    //方法二：递归 时间复杂度O(n + m)
+    public static ListNode mergeByRecursive(ListNode p1,ListNode p2){
+        if(p1 == null) {
+            return p2;
+        }else if (p2 == null){
+            return p1;
+        }
+        if (p1.val < p2.val){
+            p1.next = mergeByRecursive(p1.next,p2);
+            return p1;
+        }else {
+            p2.next = mergeByRecursive(p1,p2.next);
+            return p2;
+        }
     }
 
     public static void main(String[] args) {
         ListNode ln1 = new ListNode(1);
-        ListNode ln2 = new ListNode(3);
+        ListNode ln2 = new ListNode(2);
         ListNode ln3 = new ListNode(5);
         ListNode ln4 = new ListNode(7);
         ln1.next = ln2;
@@ -43,8 +56,8 @@ public class MergeTwoLists {
         ln3.next = ln4;
         ln4.next = null;
 
-        ListNode rn1 = new ListNode(2);
-        ListNode rn2 = new ListNode(4);
+        ListNode rn1 = new ListNode(1);
+        ListNode rn2 = new ListNode(2);
         ListNode rn3 = new ListNode(6);
         ListNode rn4 = new ListNode(8);
         rn1.next = rn2;
@@ -52,7 +65,11 @@ public class MergeTwoLists {
         rn3.next = rn4;
         rn4.next = null;
 
-        int HASH_BITS = 0x7fffffff;
-        System.out.println(HASH_BITS);
+        ListNode merge = mergeByRecursive(ln1, rn1);
+        while (merge != null){
+            System.out.print(merge.val + " -> ");
+            merge = merge.next;
+        }
+        System.out.print("null");
     }
 }
