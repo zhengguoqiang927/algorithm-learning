@@ -5,7 +5,7 @@ package com.zhengguoqiang.queue;
  * @param <Item>
  */
 public class ArrayQueue<Item> {
-    private Item[] items;//存放元素的数组
+    private final Item[] items;//存放元素的数组
     private int head;//队头下标
     private int tail;//队尾下标
 
