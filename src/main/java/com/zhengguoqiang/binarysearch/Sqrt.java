@@ -1,5 +1,8 @@
 package com.zhengguoqiang.binarysearch;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class Sqrt {
 
     public static double sqrt(double t,Double precise){
@@ -40,6 +43,18 @@ public class Sqrt {
         String s = phone.substring(0, 3) + "****" + phone.substring(7);
         System.out.println(phone);
         System.out.println(s);
+        Map<Integer,Integer> map = new LinkedHashMap<>(10,0.75f,true);
+        map.put(3,11);
+        map.put(1,12);
+        map.put(5,23);
+        map.put(2,22);
+
+        map.put(3,26);
+        map.get(5);
+
+        for (Map.Entry entry : map.entrySet()) {
+            System.out.println(entry.getKey());
+        }
     }
 
     static final int hash(Object key) {
