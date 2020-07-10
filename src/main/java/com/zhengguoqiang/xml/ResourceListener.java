@@ -1,5 +1,7 @@
 package com.zhengguoqiang.xml;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.List;
@@ -7,14 +9,22 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ResourceListener {
-    private static ExecutorService pool = Executors.newFixedThreadPool(5);
+    private static final ExecutorService pool = Executors.newFixedThreadPool(5);
+    //监听文件变化服务
     private WatchService watchService;
-    private String listenePath;
+    //监听xml文件的路径，从config.properties文件中的xmlSourceFilePath属性获取
+    private String xmlSourceFilePath;
+    //txt文件路径，从config.properties文件中的txtFilePath属性获取
+    private String txtFilePath;
+    //原xml文件转存地址，从config.properties文件中的xmlTargetFilePath属性获取
+    private String xmlTargetFilePath;
 
-    private ResourceListener(String path) {
+    private ResourceListener(String xmlSourceFilePath,String txtFilePath,String xmlTargetFilePath) {
         try {
             watchService = FileSystems.getDefault().newWatchService();
-            this.listenePath = path;
+            this.xmlSourceFilePath = xmlSourceFilePath;
+            this.txtFilePath = txtFilePath;
+            this.xmlTargetFilePath = xmlTargetFilePath;
             start();
         } catch (IOException e) {
             e.printStackTrace();
@@ -22,12 +32,12 @@ public class ResourceListener {
     }
 
     private void start() {
-        pool.execute(new Listener(watchService,this.listenePath));
+        pool.execute(new Listener(watchService,this.xmlSourceFilePath));
     }
 
-    public static void addListener(String listenePath) throws IOException {
-        ResourceListener listener = new ResourceListener(listenePath);
-        Path path = Paths.get(listenePath);
+    public static void addListener(String xmlSourceFilePath,String txtFilePath,String xmlTargetFilePath) throws IOException {
+        ResourceListener listener = new ResourceListener(xmlSourceFilePath,txtFilePath,xmlTargetFilePath);
+        Path path = Paths.get(xmlSourceFilePath);
         path.register(listener.watchService,StandardWatchEventKinds.ENTRY_CREATE);
     }
 
@@ -50,7 +60,8 @@ public class ResourceListener {
                         String path = event.context().toString();
                         if (path.endsWith(".xml")){
                             System.out.println("[" + rootPath + "/" + event.context() + "]文件发生了[" + event.kind() + "]事件");
-                            ParseXmlToTxt.xmlToTxt(rootPath+ "/" + event.context());
+                            ParseXmlToTxt.xmlToTxt(rootPath+ "/" + event.context(),
+                                    txtFilePath,xmlTargetFilePath + "/" + event.context());
                         }
                     }
                     watchKey.reset();
@@ -67,9 +78,21 @@ public class ResourceListener {
         }
     }
 
+    /**
+     * 应用程序入口，监听目录xml文件的创建并执行生成txt文件
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         try {
-            ResourceListener.addListener("/Users/zhengguoqiang/Documents");
+            String xmlSourceFilePath = PropertyUtil.getProperty("xmlSourceFilePath");
+            String txtFilePath = PropertyUtil.getProperty("txtFilePath");
+            String xmlTargetFilePath = PropertyUtil.getProperty("xmlTargetFilePath");
+            if (StringUtils.isAnyEmpty(xmlSourceFilePath,txtFilePath,xmlTargetFilePath)){
+                System.out.println("配置文件中xml和txt文件路径配置错误！！！");
+                return;
+            }
+            ResourceListener.addListener(xmlSourceFilePath,txtFilePath,xmlTargetFilePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
