@@ -1,6 +1,8 @@
 package com.zhengguoqiang.xml;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -9,6 +11,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ResourceListener {
+
+    private static final Logger logger = LoggerFactory.getLogger(ResourceListener.class);
+
     private static final ExecutorService pool = Executors.newFixedThreadPool(5);
     //监听文件变化服务
     private WatchService watchService;
@@ -90,11 +95,13 @@ public class ResourceListener {
             String xmlTargetFilePath = PropertyUtil.getProperty("xmlTargetFilePath");
             if (StringUtils.isAnyEmpty(xmlSourceFilePath,txtFilePath,xmlTargetFilePath)){
                 System.out.println("配置文件中xml和txt文件路径配置错误！！！");
+                logger.info("配置文件中xml和txt文件路径配置错误！！！");
                 return;
             }
             ResourceListener.addListener(xmlSourceFilePath,txtFilePath,xmlTargetFilePath);
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error("main函数报错",e);
         }
     }
 }

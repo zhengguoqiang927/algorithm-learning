@@ -3,6 +3,8 @@ package com.zhengguoqiang.xml;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.*;
 import org.dom4j.io.SAXReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.*;
@@ -13,6 +15,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class ParseXmlToTxt {
+
+    private static final Logger logger = LoggerFactory.getLogger(ParseXmlToTxt.class);
 
     private static final AtomicLong top_index = new AtomicLong(0);
     private static final AtomicLong bottom_index = new AtomicLong(0);
@@ -150,6 +154,7 @@ public class ParseXmlToTxt {
         File dir = new File(xmlSourceFilePath);
         if (!dir.isDirectory()){
             System.out.println("批处理失败，源文件目录配置错误！！！");
+            logger.info("批处理失败，源文件目录配置错误！！！");
             return;
         }
         File[] files = dir.listFiles();
