@@ -2,6 +2,7 @@ package com.zhengguoqiang.tree;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 /**
  * 二叉查找树
@@ -19,7 +20,7 @@ public class BinarySearchTree {
     }
 
     /**
-     * 先序遍历
+     * 先序遍历递归方式
      * @param root
      */
     public static void printByBefore(Node root){
@@ -27,6 +28,99 @@ public class BinarySearchTree {
         System.out.print(root.val + " -> ");
         printByBefore(root.left);
         printByBefore(root.right);
+    }
+
+    /**
+     * 先序遍历非递归方式
+     * @param root
+     */
+    public static void preOrder(Node root){
+        if (root == null) return;
+        Stack<Node> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.empty()){
+            Node node = stack.pop();
+            System.out.print(node.val + " -> ");
+            if (node.right != null){
+                stack.push(node.right);
+            }
+            if (node.left != null){
+                stack.push(node.left);
+            }
+        }
+        System.out.println();
+    }
+
+    /**
+     * 中序遍历非递归
+     * @param root
+     */
+    public static void midOrder(Node root){
+        if (root == null) return;
+        Stack<Node> stack = new Stack<>();
+        while (!stack.empty() || root != null){
+            if (root != null){
+                stack.push(root);
+                root = root.left;
+            }else {
+                root = stack.pop();
+                System.out.print(root.val + " -> ");
+                root = root.right;
+            }
+        }
+        System.out.println();
+    }
+
+    public static void postOrder(Node head){
+        if (head == null) return;
+        Stack<Node> s1 = new Stack<>();
+        Stack<Node> s2 = new Stack<>();
+        s1.push(head);
+        while (!s1.empty()){
+            head = s1.pop();
+            s2.push(head);
+            if (head.left != null){
+                s1.push(head.left);
+            }
+            if (head.right != null){
+                s1.push(head.right);
+            }
+        }
+        while (!s2.empty()){
+            head = s2.pop();
+            System.out.print(head.val + " -> ");
+        }
+        System.out.println();
+    }
+
+
+    /**
+     * 二叉树的神级遍历方法（时间复杂度O(N),空间复杂度O(1)）
+     * @param head
+     */
+    public static void morrisIn(Node head){
+        if (head == null) return;
+        Node cur1 = head;
+        Node cur2 = null;
+        while (cur1 != null) {
+            cur2 = cur1.left;
+            if (cur2 != null){
+                //查找左子树中最右边的结点
+                while ( cur2.right != null && cur2.right != cur1){
+                    cur2 = cur2.right;
+                }
+                //找到后指向根结点（中序遍历）
+                if (cur2.right == null){
+                    cur2.right = cur1;
+                    cur1 = cur1.left;
+                    continue;
+                }else {
+                    cur2.right = null;
+                }
+            }
+            System.out.print(cur1.val + " ");
+            cur1 = cur1.right;
+        }
     }
 
     /**
@@ -56,6 +150,7 @@ public class BinarySearchTree {
                 last = nlast;
             }
         }
+        System.out.println();
     }
 
     /**
@@ -122,5 +217,20 @@ public class BinarySearchTree {
         System.out.println("\n树的深度：" + deep(root));
         System.out.println("树是否平衡：" + isBalance(root));
         printByBefore(root);
+        System.out.println();
+        preOrder(root);
+        System.out.print("中序遍历：");
+        midOrder(root);
+        System.out.print("后序遍历：");
+        postOrder(root);
+        System.out.print("神级中序遍历：");
+        morrisIn(root);
+        String s = "             BARCODE  INDEX     DATE     S.TIME    E.TIME   CYCLE             JOB        RESULT       USER          LOTINFO        MACHINE        \n" +
+                "          11113024469094 55011 2020/7/13   13:17:37  13:17:46      9 309000124208B3_Kenobi_MB_BOT     GOOD     KohYoung              KOHYOUNG\n" +
+                "PadID\tComponent ID\t  Size X\t  Size Y\t T\tVolume(%)\tHeight(um)\tOffsetX(mm)\tOffsetY(mm)\t Area(%)\tVolume(um3)\tArea(um2)\t  Result\tPinNumber\t Barcode\t  PCB ID\t     Job\t  Date  \t Time \t   Shape\tArray\t   Panel\tPosX(mm)\tPosY(mm)\t    Spec\tPad Verification\tTolerance\tOffsetX(%)\tOffsetY(%)\tLibrary_Name\tHeight(%)\t\n" +
+                "\n";
+        String y = "\tBARCODE\tINDEX\tDATE\tS.TIME\tE.TIME\tCYCLE\tJOB\tRESULT\tUSER\tLOTINFO\tMACHINE\n" +
+                "\tD33333333\t2\t2020-07-12\t14:39:45\t14:39:50\t5\t309000124208T4-KENOBI-TOP\tPASS\tSV\tKOHYOUNG\n" +
+                "PadID\tComponent ID\t  Size X\t  Size Y\t T\tVolume(%)\tHeight(um)\tOffsetX(mm)\tOffsetY(mm)\t Area(%)\tVolume(um3)\tArea(um2)\t  Result\tPinNumber\t Barcode\t  PCB ID\t     Job\t  Date  \t Time \t   Shape\tArray\t   Panel\tPosX(mm)\tPosY(mm)\t    Spec\tPad Verification\tTolerance\tOffsetX(%)\tOffsetY(%)\tLibrary_Name\tHeight(%)";
     }
 }
