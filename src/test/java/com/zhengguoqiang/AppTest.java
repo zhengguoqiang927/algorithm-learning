@@ -18,6 +18,18 @@ public class AppTest {
     public void test(){
         Object o = new Object();
         System.out.println(ClassLayout.parseInstance(o).toPrintable());
+
+        synchronized (o){
+
+            System.out.println(ClassLayout.parseInstance(o).toPrintable());
+
+//            User user = new User(100,"testtesttest");
+            User[] user = new User[1];
+            System.out.println(ClassLayout.parseInstance(user).toPrintable());
+
+            String name  = "testtesttest";
+            System.out.println(name.getBytes().length);
+        }
     }
 
     public static int binarySearch(int[] a,int value){
@@ -72,4 +84,19 @@ public class AppTest {
     }
 
 
+}
+
+class User{
+    int id;
+    String name;
+
+//    int[] books;
+
+    public User(){}
+
+    public User(int id, String name) {
+        this.id = id;
+        this.name = name;
+//        this.books = books;
+    }
 }
