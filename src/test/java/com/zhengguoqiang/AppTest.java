@@ -83,8 +83,28 @@ public class AppTest {
         }
     }
 
+    @Test
+    public void testSimpleInt(){
+        SimpleInt instance = new SimpleInt();
+        System.out.println("The identity hash code is " + System.identityHashCode(instance));
+        System.out.println(ClassLayout.parseInstance(instance).toPrintable());
+    }
 
-}
+    @Test
+    public void testSimpleLong(){
+        System.out.println(ClassLayout.parseClass(SimpleLong.class).toPrintable());
+        SimpleLong simpleLong = new SimpleLong();
+        System.out.println(ClassLayout.parseInstance(simpleLong).toPrintable());
+    }
+
+    @Test
+    public void testSimpleArray(){
+        System.out.println(ClassLayout.parseClass(SimpleArray.class).toPrintable());
+        SimpleArray simpleArray = new SimpleArray();
+        simpleArray.ans[0] = 12L;
+        simpleArray.ans[1] = 12L;
+        System.out.println(ClassLayout.parseInstance(simpleArray).toPrintable());
+    }
 
 class User{
     int id;
@@ -99,4 +119,20 @@ class User{
         this.name = name;
 //        this.books = books;
     }
+}
+
+
+}
+
+class SimpleInt{
+    private int state;
+}
+
+class SimpleLong{
+    private long state;
+}
+
+class SimpleArray{
+    int state;
+    long[] ans = new long[10];
 }
