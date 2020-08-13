@@ -1,7 +1,7 @@
 package com.zhengguoqiang.offer;
 
 /**
- * 数组中重复的数字
+ * 3.数组中重复的数字
  */
 public class Question3 {
     //哈希表 时间复杂度O(n),空间复杂度O(n)
