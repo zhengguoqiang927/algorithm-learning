@@ -8,7 +8,7 @@ package com.zhengguoqiang.offer;
  * 6 8 11 15
  * 在上面二维数组中查找给定元素
  */
-public class Question4 {
+public class TwoDimensionalArraySearch {
     public static boolean find(int[][] arrays,int key){
         int rows = arrays.length;
         if (rows == 0) return false;

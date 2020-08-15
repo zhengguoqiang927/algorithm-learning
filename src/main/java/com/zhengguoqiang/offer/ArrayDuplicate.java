@@ -3,7 +3,7 @@ package com.zhengguoqiang.offer;
 /**
  * 3.数组中重复的数字
  */
-public class Question3 {
+public class ArrayDuplicate {
     //哈希表 时间复杂度O(n),空间复杂度O(n)
     //排序 时间复杂度O(nlogn),空间复杂度O(1)
 
