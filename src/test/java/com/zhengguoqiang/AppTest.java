@@ -3,6 +3,8 @@ package com.zhengguoqiang;
 import org.junit.Test;
 import org.openjdk.jol.info.ClassLayout;
 
+import java.io.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -13,6 +15,48 @@ import java.util.regex.Pattern;
  * Unit test for simple App.
  */
 public class AppTest {
+
+    @Test
+    public void readFile(){
+        String filePath = "/Users/zhengguoqiang/Documents/logs/app-info-cn.log";
+        String str = "配置文件中xml和txt文件路径配置错误！！！";
+        System.out.println(str.getBytes().length);
+        try {
+            FileReader reader = new FileReader(new File(filePath));
+            char[] chars = new char[1024];
+            int read = reader.read(chars,0,chars.length);
+            System.out.println(chars);
+//            System.out.println(read);
+            reader.close();
+
+
+
+
+            FileWriter fileWriter = new FileWriter(new File(filePath),true);
+            fileWriter.write("Hello World");
+            fileWriter.close();
+
+            FileOutputStream fos = new FileOutputStream(new File(filePath),true);
+            String s = " LPL";
+            byte[] sin = {91,92,93,94};
+            fos.write(sin,1,2);
+            fos.close();
+
+
+            FileInputStream fis = new FileInputStream(new File(filePath));
+            byte[] bytes = new byte[1024];
+            StringBuilder sb = new StringBuilder();
+            while (fis.read(bytes,0,bytes.length) != -1){
+                sb.append(new String(bytes));
+            }
+            System.out.println(sb.toString());
+            fis.close();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void test(){

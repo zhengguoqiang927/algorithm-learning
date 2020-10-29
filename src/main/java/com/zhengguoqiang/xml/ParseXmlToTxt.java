@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,10 +31,23 @@ public class ParseXmlToTxt {
         BufferedWriter bw = null;
         try {
             //创建xml源文件
-            File xmlFile = new File(xmlSourceFilePath);
+//            File xmlFile = new File(xmlSourceFilePath);
 
-            SAXReader reader = new SAXReader();
-            Document document = reader.read(xmlFile);
+
+//            SAXReader reader = new SAXReader();
+//            Document document = reader.read(xmlFile);
+
+            Document document = null;
+
+            StringBuilder sb = new StringBuilder();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(xmlSourceFilePath), StandardCharsets.UTF_8));
+            String line = null;
+            while ((line = bufferedReader.readLine()) != null){
+                sb.append(line).append("\n");
+            }
+            bufferedReader.close();
+            document = DocumentHelper.parseText(sb.toString());
+
 
             //txt表头
             StringBuilder header = new StringBuilder();
@@ -111,14 +125,16 @@ public class ParseXmlToTxt {
 
             moveFile(xmlSourceFilePath,xmlTargetFilePath);
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            logger.error("Parse xml to txt error!",e);
         } finally {
             try {
                 if (bw != null) {
                     bw.close();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
+                logger.error("close BufferedWriter error!",e);
             }
 
         }
@@ -137,7 +153,8 @@ public class ParseXmlToTxt {
             Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("源文件转储失败,源文件路径：" + sourcePath);
+//            System.out.println("源文件转储失败,源文件路径：" + sourcePath);
+            logger.error("源文件转储失败,源文件路径:{}",sourcePath,e);
         }
     }
 

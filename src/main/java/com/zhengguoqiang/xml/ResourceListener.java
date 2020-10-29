@@ -63,7 +63,9 @@ public class ResourceListener {
                     List<WatchEvent<?>> watchEvents = watchKey.pollEvents();
                     for (WatchEvent<?> event:watchEvents){
                         String path = event.context().toString();
-                        if (path.endsWith(".xml")){
+                        boolean flag = path.startsWith("_");
+                        if (flag) System.out.println("[" +path + "]文件命名不规范，不进行处理！！！");
+                        if (path.endsWith(".xml") && !flag){
                             System.out.println("[" + rootPath + "/" + event.context() + "]文件发生了[" + event.kind() + "]事件");
                             ParseXmlToTxt.xmlToTxt(rootPath+ "/" + event.context(),
                                     txtFilePath,xmlTargetFilePath + "/" + event.context());
