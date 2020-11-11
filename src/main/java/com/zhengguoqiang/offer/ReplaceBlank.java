@@ -31,8 +31,43 @@ public class ReplaceBlank {
         return builder.toString();
     }
 
+    public static String replaceSpace(String s){
+        char[] oldChar = s.toCharArray();
+        int spaceNum = 0;
+        int oldIndex = oldChar.length-1;
+        for (int i = 0;i<=oldIndex;i++){
+            if (oldChar[i] == 32) spaceNum++;
+        }
+        int newIndex = oldIndex + 2 * spaceNum;
+        char[] newChar = new char[newIndex+1];
+        while (oldIndex >= 0){
+            if (oldChar[oldIndex] == 32){
+                newChar[newIndex--] = '0';
+                newChar[newIndex--] = '2';
+                newChar[newIndex--] = '%';
+            }else {
+                newChar[newIndex--] = oldChar[oldIndex];
+            }
+            oldIndex--;
+        }
+        return new String(newChar);
+    }
+
+    public static String replaceSpaceWithStringBuilder(String s){
+        StringBuilder sb = new StringBuilder();
+        for (Character c:s.toCharArray()){
+            if (c == ' ') sb.append("%20");
+            else sb.append(c);
+        }
+        return sb.toString();
+    }
+
     public static void main(String[] args) {
         String result = replaceBlank(new StringBuilder("we are happy"));
         System.out.println(result);
+        String s = replaceSpace("we are happy");
+        System.out.println(s);
+        String we_are_happy = replaceSpaceWithStringBuilder("we are happy");
+        System.out.println(we_are_happy);
     }
 }
