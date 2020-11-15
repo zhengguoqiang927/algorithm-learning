@@ -32,21 +32,39 @@ import java.util.LinkedList;
  */
 public class RemoveKdigits_402 {
 
-    public String methodOne(String num,int k){
+    public static String methodOne(String num,int k){
         Deque<Character> deque = new LinkedList<>();
         char[] chars = num.toCharArray();
         for (int i = 0;i<num.length();i++){
             char c = num.charAt(i);
-            while (){
-
+            while (!deque.isEmpty() && k>0 && deque.getLast() > c){
+                deque.pollLast();
+                k--;
             }
-
+            deque.offerLast(c);
         }
-        return null;
+
+        for (int i=0;i<k;i++){
+            deque.pollLast();
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        boolean isFirstZero = true;
+        while (!deque.isEmpty()){
+            Character character = deque.pollFirst();
+            if (isFirstZero && character == '0'){
+                continue;
+            }
+            isFirstZero = false;
+            stringBuilder.append(character);
+        }
+        return stringBuilder.length() == 0 ? "0" : stringBuilder.toString();
     }
 
     public static void main(String[] args) {
-        char a = '4';
-        System.out.println(a);
+        String s = "10";
+        int k = 2;
+        String result = methodOne(s, k);
+        System.out.println(result);
     }
 }
